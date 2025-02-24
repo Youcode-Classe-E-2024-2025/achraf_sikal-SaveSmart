@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Elegant Library Manager')</title>
-    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <title>@yield('title', 'Elegant SaveSmart')</title>
+    <link rel="icon" type="image/x-icon" href="favicon.webp">
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -28,7 +28,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-6 text-center">
-            <p>&copy; {{ date('Y') }} Library Manager. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} SaveSmart. All rights reserved.</p>
         </div>
     </footer>
 
