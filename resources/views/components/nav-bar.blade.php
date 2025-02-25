@@ -57,7 +57,7 @@
                                 class="h-9 w-9 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700 shadow-sm"
                             >
                         </button>
-
+                        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
                         <!-- Dropdown -->
                         <div
                             x-show="open"

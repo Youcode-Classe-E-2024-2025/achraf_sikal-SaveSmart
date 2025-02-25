@@ -9,6 +9,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('avatar')->unique();
             $table->string('password');
             $table->foreignId('family_id')->nullable()->constrained('families')->onDelete('set null');
             $table->enum('role', ['admin', 'member'])->default('member');
