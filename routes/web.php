@@ -2,9 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FamilyController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+
+Route::post('/family/join', [FamilyController::class, 'join'])->name('family.join');
+Route::post('/family/create', [FamilyController::class, 'create'])->name('family.create');
+Route::get('/family', function () {
+    return view('family/join');
 });
 
 Route::get('/profile', [UserController::class,'profile']);

@@ -26,7 +26,7 @@ class UserController extends Controller
             $incomingFields['password'] = bcrypt($incomingFields['password']);
             $user = User::create($incomingFields);
             auth()->login($user);
-            return redirect('/')->with('success', 'Account created successfully!');
+            return redirect('/family')->with('success', 'Account created successfully!');
         }
         return view('user/signup');
     }
