@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfilesController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +20,7 @@ Route::get('/family', function () {
     return view('family/join');
 });
 
-Route::get('/profile', [UserController::class,'profile']);
+Route::get('/dash', [UserController::class,'profile']);
 Route::get('/signup', [UserController::class,'signup']);
 Route::get('/login', [UserController::class,'login']);
 Route::post('/signup', [UserController::class,'signup']);
@@ -25,3 +28,5 @@ Route::post('/logout', [UserController::class,'logout']);
 Route::post('/login', [UserController::class,'login']);
 
 Route::resource('profile', ProfilesController::class);
+Route::resource('categories', CategoryController::class);
+Route::resource('transactions', TransactionController::class);

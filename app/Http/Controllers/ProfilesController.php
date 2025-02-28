@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Profiles;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Mockery\ExpectsHigherOrderMessage;
 
@@ -50,15 +52,19 @@ class ProfilesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Profiles $profiles)
+    public function show(Profiles $profile)
     {
-        //
+        $transactions = Transaction::where('user_id', auth()->user()->id)->get();
+        $categories = Category::where('user_id', auth()->user()->id)->get();
+        $user = auth()->user();
+        return view('profile.dash',compact('user','profile', 'transactions', 'categories'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Profiles $profiles)
+    public function edit(Profiles $profile)
     {
         //
     }
@@ -66,7 +72,7 @@ class ProfilesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Profiles $profiles)
+    public function update(Request $request, Profiles $profile)
     {
         //
     }
