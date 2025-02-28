@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Family;
 use Illuminate\Http\Request;
 
 class FamilyController extends Controller
@@ -21,7 +23,19 @@ class FamilyController extends Controller
 
         // Use openssl_decrypt() function to decrypt the data
         $decryption=openssl_decrypt ($id, $ciphering, $decryption_key, $options, $encryption_iv);
+        User::where('id',auth()->user()->id)->update(['family_id'=> $decryption]);
 
         return view('family/join');
+    }
+    public function create(Request $request)
+    {
+        $incomingFields = $request->validate([
+            'family_name'=> ['required','min:3']
+        ]);
+        $incomingFields['name'] = $incomingFields['family_name'];
+        $family = Family::create($incomingFields);
+        auth()->user()->family()->associate($family)->save();
+
+        return redirect('/');
     }
 }

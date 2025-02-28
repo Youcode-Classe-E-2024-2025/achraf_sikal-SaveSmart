@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Family::class);
     }
+    public function profile()
+    {
+        return $this->hasMany(Profiles::class);
+    }
+
 }

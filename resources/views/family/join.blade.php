@@ -19,6 +19,7 @@
                     <p class="subtitle">Connect with your loved ones by entering your family ID</p>
 
                     <form action="{{ route('family.join') }}" method="POST">
+                        @csrf
                         <div class="input-group">
                             <label for="family_id">Family ID</label>
                             <div class="input-wrapper">
@@ -45,6 +46,7 @@
                     <p class="subtitle">Start your own family group and invite others to join</p>
 
                     <form action="{{ route('family.create') }}" method="POST">
+                        @csrf
                         <div class="input-group">
                             <label for="family_name">Family Name</label>
                             <div class="input-wrapper">
