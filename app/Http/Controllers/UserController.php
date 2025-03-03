@@ -26,7 +26,7 @@ class UserController extends Controller
             $incomingFields['password'] = bcrypt($incomingFields['password']);
             $user = User::create($incomingFields);
             auth()->login($user);
-            return redirect('/family')->with('success', 'Account created successfully!');
+            return redirect('/profile')->with('success', 'Account created successfully!');
         }
         return view('user/signup');
     }
@@ -38,7 +38,7 @@ class UserController extends Controller
             ]);
             if(auth()->attempt($incomingFields)){
                 $request->session()->regenerate();
-                return redirect('/');
+                return redirect('/profile');
             }
         }
         return view('user/login');
