@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('family_id')->nullable()->constrained('families')->onDelete('cascade');
+            $table->foreignId('profile_id')->nullable()->constrained('profiles')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->enum('type', ['income', 'expense']);

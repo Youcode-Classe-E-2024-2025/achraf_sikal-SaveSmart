@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
@@ -12,7 +14,9 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view("transaction.index");
+        $customCategory = Category::where('user_id',auth()->user()->id)->get();
+        $defCategory = Category::where('user_id',null)->get();
+        return view("transaction.index", compact("customCategory","defCategory"));
     }
 
     /**
@@ -20,7 +24,37 @@ class TransactionController extends Controller
      */
     public function create(Request $request)
     {
-
+        $incomingFields = $request->validate([
+            'type' => [
+                'required',
+                'in:expense,income'
+            ],
+            'amount' => [
+                'required',
+                'numeric',
+                'between:1,100000'
+            ],
+            'category_id' => [
+                'required'
+            ],
+            'date' => [
+                'required',
+                'date'
+            ],
+            'description'=>[]
+        ], [
+            'type.required' => 'The transaction type is required.',
+            'type.in' => 'The transaction type must be either "expense" or "income".',
+            'amount.required' => 'The amount is required.',
+            'amount.numeric' => 'The amount must be a number.',
+            'amount.between' => 'The amount must be between 1 $ and 100,000 $.',
+            'category.required' => 'The category is required.',
+            'date.required' => 'The date is required.',
+            'date.date' => 'The date format is invalid.'
+        ]);
+        $incomingFields['user_id'] = auth('')->user()->id;
+        $incomingFields['profile_id'] = Session::get('profile')->id;
+        Transaction::create($incomingFields);
     }
 
     /**

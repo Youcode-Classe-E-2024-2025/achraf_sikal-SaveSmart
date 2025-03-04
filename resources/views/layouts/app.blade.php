@@ -16,7 +16,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 dark:bg-black min-h-screen flex flex-col">
     <!-- Navigation -->
     <x-nav-bar />
 

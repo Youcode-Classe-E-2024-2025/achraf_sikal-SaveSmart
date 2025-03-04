@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\Profiles;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Mockery\ExpectsHigherOrderMessage;
+use Illuminate\Support\Facades\Session;
 
 class ProfilesController extends Controller
 {
@@ -54,10 +56,16 @@ class ProfilesController extends Controller
      */
     public function show(Profiles $profile)
     {
-        $transactions = Transaction::where('user_id', auth()->user()->id)->get();
-        $categories = Category::where('user_id', auth()->user()->id)->get();
-        $user = auth()->user();
-        return view('profile.dash',compact('user','profile', 'transactions', 'categories'));
+        if (Auth::check()) {
+            $transactions = Transaction::where('user_id', auth()->user()->id)->with('profile')->get();
+            $categories = Category::where('user_id', auth()->user()->id)->get();
+            $user = auth()->user();
+            Session::put('profile', $profile);
+            return view('profile.dash',compact('user','profile', 'transactions', 'categories'));
+        }
+        else {
+            return redirect('/login');
+        }
 
     }
 

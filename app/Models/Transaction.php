@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
     protected $table = "transactions";
-    protected $fillable = ['type','user_id', 'family_id', 'category_id', 'amount', 'date', 'description'];
+    protected $fillable = ['type','user_id', 'profile_id', 'category_id', 'amount', 'date', 'description'];
 
     /**
      * Get the users that belong to the family.
