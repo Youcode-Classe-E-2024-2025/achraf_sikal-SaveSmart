@@ -29,4 +29,6 @@ Route::post('/login', [UserController::class,'login']);
 
 Route::resource('profile', ProfilesController::class);
 Route::resource('categories', CategoryController::class);
+Route::get('/transactions/all', [TransactionController::class,'showall']);
 Route::resource('transactions', TransactionController::class);
+

@@ -95,7 +95,15 @@
                 </a>
             </div>
             <div class="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden">
-                @forelse($transactions as $transaction)
+                @forelse($transactions as $key => $transaction)
+                @if ($key > 2)
+                    <div class="flex justify-center p-6 rounded-lg shadow-md">
+                        <a href="/transactions/all" class="px-5 py-2.5 bg-transparent text-cyan-400 border border-cyan-400 rounded-md hover:bg-cyan-400 hover:text-gray-900 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
+                            See More
+                        </a>
+                    </div>
+                    @break
+                @endif
                     <div class="border-b p-4 transition-colors">
                         <div class="flex justify-between items-center">
                             <div>

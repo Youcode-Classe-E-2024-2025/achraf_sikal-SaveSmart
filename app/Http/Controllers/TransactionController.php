@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
@@ -95,5 +96,15 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+    public function showall()
+    {
+        if (Auth::check()) {
+            $transactions = Transaction::where('user_id', auth()->user()->id)->with('profile')->paginate(10);
+            return view('transaction.desplay',compact( 'transactions'));
+        }
+        else {
+            return redirect('/login');
+        }
     }
 }
