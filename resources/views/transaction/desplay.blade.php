@@ -19,7 +19,7 @@
             }
             @endphp
             <p class="font-bold {{ $amount > 0 ? 'text-green-600' : 'text-red-600' }}">
-                {{ $transaction->amount }} USD
+                {{ number_format($amount,2) }} USD
             </p>
         </div>
     </div>

@@ -185,7 +185,8 @@ document.addEventListener('click', (e) => {
 });
 document.addEventListener('keydown', (e) => {
     if (e.key === 'D' && e.shiftKey) {
-        document.documentElement.classList.toggle('dark');
+        let isDark =document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme',isDark ? 'dark' : 'light');
     }
 });
 if (localStorage.getItem('theme') === 'dark' ||

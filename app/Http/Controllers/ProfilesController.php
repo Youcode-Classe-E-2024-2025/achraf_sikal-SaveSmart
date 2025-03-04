@@ -57,11 +57,12 @@ class ProfilesController extends Controller
     public function show(Profiles $profile)
     {
         if (Auth::check()) {
-            $transactions = Transaction::where('user_id', auth()->user()->id)->with('profile')->get();
+            $transactions = Transaction::where('user_id', auth()->user()->id)->with('profile')->take(3)->get();
             $categories = Category::where('user_id', auth()->user()->id)->get();
             $user = auth()->user();
+            $profileTransactions = Profiles::where('id', $profile->id)->with('transaction')->first();
             Session::put('profile', $profile);
-            return view('profile.dash',compact('user','profile', 'transactions', 'categories'));
+            return view('profile.dash',compact('user','profile', 'transactions', 'categories','profileTransactions'));
         }
         else {
             return redirect('/login');

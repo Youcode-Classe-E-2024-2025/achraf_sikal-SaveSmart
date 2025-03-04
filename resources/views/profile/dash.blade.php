@@ -16,6 +16,26 @@
             </div>
         </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl px-4 mb-6">
+            <!-- Total Income Card -->
+            <div class="bg-gradient-to-r from-lime-400 to-green-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl">
+                <h2 class="text-lg font-semibold">Your Total Income</h2>
+                <p class="text-3xl font-bold mt-2 overflow-x-scroll no-scrollbar">{{ number_format($profileTransactions->transaction->where('type','income')->sum('amount'),2) }} $</p>
+            </div>
+
+            <!-- Total Expense Card -->
+            <div class="bg-gradient-to-r from-red-400 to-orange-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl">
+                <h2 class="text-lg font-semibold">Your Total Expense</h2>
+                <p class="text-3xl font-bold mt-2 overflow-x-scroll no-scrollbar">{{ number_format($profileTransactions->transaction->where('type','expense')->sum('amount'),2) }} $</p>
+            </div>
+
+            <!-- Balance Card -->
+            <div class="bg-gradient-to-r from-blue-400 to-purple-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300  hover:shadow-2xl">
+                <h2 class="text-lg font-semibold">Your Balance</h2>
+                <p class="text-3xl font-bold mt-2 overflow-x-scroll no-scrollbar">{{ number_format($profileTransactions->transaction->where('type','income')->sum('amount')-$profileTransactions->transaction->where('type','expense')->sum('amount'),2) }} $</p>
+            </div>
+        </div>
+
         <!-- User Information -->
         <div class="border-t border-gray-200 pt-6">
             <h2 class="text-2xl font-semibold mb-4">User Information</h2>
@@ -94,6 +114,7 @@
                     Make a Transaction
                 </a>
             </div>
+
             <div class="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden">
                 @forelse($transactions as $key => $transaction)
                 @if ($key > 2)
@@ -117,7 +138,7 @@
                             }
                             @endphp
                             <p class="font-bold {{ $amount > 0 ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $transaction->amount }} USD
+                                {{ number_format($amount,2) }} USD
                             </p>
                         </div>
                     </div>
