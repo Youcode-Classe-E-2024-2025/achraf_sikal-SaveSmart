@@ -14,12 +14,19 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Playfair Display', serif;
         }
+        @keyframes pulse-scale {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        }
+        .animate-pulse-scale {
+        animation: pulse-scale 2s infinite;
+        }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-black min-h-screen flex flex-col">
     <!-- Navigation -->
     <x-nav-bar />
-
+    
     <!-- Main Content -->
     <main class="flex-grow">
         @yield('content')

@@ -6,6 +6,37 @@
                     SaveSmart
                 </a>
             </div>
+            <div class="flex gap-4 p-4 justify-between">
+        <!-- Back Button -->
+        <button
+        class="flex items-center justify-center gap-2 px-6 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg
+        hover:from-purple-700 hover:to-blue-600
+        focus:outline-none focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800
+        transition-all duration-300 transform hover:-translate-x-1 hover:shadow-lg hover:shadow-purple-500/50
+        dark:shadow-blue-800/80"
+        onclick="history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse-scale">
+            <path d="m12 19-7-7 7-7"></path>
+            <path d="M19 12H5"></path>
+        </svg>
+        <span>Go Back</span>
+        </button>
+
+        <!-- Forward Button -->
+        <button
+        class="flex items-center justify-center gap-2 px-6 py-3 font-bold text-white bg-gradient-to-r from-pink-500 to-orange-500 rounded-lg
+        hover:from-pink-600 hover:to-orange-600
+        focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-800
+        transition-all duration-300 transform hover:translate-x-1 hover:shadow-lg hover:shadow-pink-500/50
+        dark:shadow-orange-800/80"
+        onclick="history.forward()">
+        <span>Go Forward</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse-scale">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+        </svg>
+        </button>
+    </div>
 
             <div class="flex items-center gap-4">
                 <!-- Dark Mode Toggle -->
@@ -70,6 +101,7 @@
                             x-transition:leave-end="transform opacity-0 scale-95"
                             class="absolute right-0 mt-2 w-56 rounded-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 shadow-lg divide-y divide-gray-100 dark:divide-gray-700"
                             style="display: none;"
+                            class="z-50"
                         >
                             <div class="px-4 py-3">
                                 <p class="text-sm font-medium text-gray-900 dark:text-gray-200">
@@ -151,7 +183,11 @@ document.addEventListener('click', (e) => {
         themeDropdown.classList.add('hidden');
     }
 });
-
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'D' && e.shiftKey) {
+        document.documentElement.classList.toggle('dark');
+    }
+});
 if (localStorage.getItem('theme') === 'dark' ||
     (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark');

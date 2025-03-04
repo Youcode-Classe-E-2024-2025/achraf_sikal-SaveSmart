@@ -31,7 +31,7 @@
         <div class="mt-8 border-t border-gray-200 pt-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-semibold">Categories</h2>
-                <button id="addCategoryBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+                <button id="addCategoryBtn" class="px-5 py-2.5 bg-transparent text-cyan-400 border border-cyan-400 rounded-md hover:bg-cyan-400 hover:text-gray-900 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
                     + Add Category
                 </button>
             </div>
@@ -90,7 +90,7 @@
         <div class="mt-8 border-t border-gray-200 pt-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-semibold mb-4">Recent Transactions</h2>
-                <a href="/transactions" id="addCategoryBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+                <a href="/transactions" id="addCategoryBtn" class="px-5 py-2.5 bg-transparent text-cyan-400 border border-cyan-400 rounded-md hover:bg-cyan-400 hover:text-gray-900 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
                     Make a Transaction
                 </a>
             </div>
