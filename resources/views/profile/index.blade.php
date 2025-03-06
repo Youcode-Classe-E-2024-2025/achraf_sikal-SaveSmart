@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Profile')
 
 @section('content')
 @vite('resources/css/style.css')

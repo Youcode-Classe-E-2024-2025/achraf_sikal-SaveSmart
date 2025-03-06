@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BudgetOptController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -22,13 +23,14 @@ Route::get('/family', function () {
 
 Route::get('/dash', [UserController::class,'profile']);
 Route::get('/signup', [UserController::class,'signup']);
-Route::get('/login', [UserController::class,'login']);
+Route::get('login', [UserController::class,'login']);
 Route::post('/signup', [UserController::class,'signup']);
 Route::post('/logout', [UserController::class,'logout']);
-Route::post('/login', [UserController::class,'login']);
+Route::post('/login', [UserController::class,'login'])->name('login');;
 
 Route::resource('profile', ProfilesController::class);
 Route::resource('categories', CategoryController::class);
 Route::get('/transactions/all', [TransactionController::class,'showall']);
 Route::resource('transactions', TransactionController::class);
 
+Route::resource('budget', BudgetOptController::class);

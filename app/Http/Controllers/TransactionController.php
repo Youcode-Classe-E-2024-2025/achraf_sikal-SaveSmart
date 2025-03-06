@@ -6,10 +6,15 @@ use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('check.auth');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -53,9 +58,11 @@ class TransactionController extends Controller
             'date.required' => 'The date is required.',
             'date.date' => 'The date format is invalid.'
         ]);
+        $profileId = Session::get('profile')->id;
         $incomingFields['user_id'] = auth('')->user()->id;
-        $incomingFields['profile_id'] = Session::get('profile')->id;
+        $incomingFields['profile_id'] = $profileId;
         Transaction::create($incomingFields);
+        return redirect('/profile/' . $profileId);
     }
 
     /**

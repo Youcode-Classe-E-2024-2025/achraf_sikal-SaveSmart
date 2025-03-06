@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profile Dashboard')
+@section('title', ucfirst($profile->name) )
 
 @section('content')
 <div class="bg-white dark:bg-gray-900 shadow-md rounded-lg max-w-4xl mx-auto my-8 dark:text-white">
@@ -11,26 +11,26 @@
                 src="{{ "/storage/".$user->avatar ?? 'https://placeholder.com/150x150' }}"
                 alt="{{ $user->name }}'s avatar">
             <div class="text-center md:text-left">
-                <h1 class="text-3xl font-bold">{{ $profile->name }}</h1>
+                <h1 class="text-3xl font-bold">{{ ucfirst($profile->name) }}</h1>
                 <p class="text-gray-600 dark:text-gray-300">Member since {{ $profile->created_at->format('j F Y') }}</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl px-4 mb-6">
             <!-- Total Income Card -->
-            <div class="bg-gradient-to-r from-lime-400 to-green-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl">
+            <div class="bg-gradient-to-r from-lime-400 to-green-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl hover:shadow-green-500/50 dark:hover:shadow-lime-800/80">
                 <h2 class="text-lg font-semibold">Your Total Income</h2>
                 <p class="text-3xl font-bold mt-2 overflow-x-scroll no-scrollbar">{{ number_format($profileTransactions->transaction->where('type','income')->sum('amount'),2) }} $</p>
             </div>
 
             <!-- Total Expense Card -->
-            <div class="bg-gradient-to-r from-red-400 to-orange-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl">
+            <div class="bg-gradient-to-r from-red-400 to-orange-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300 hover:shadow-2xl hover:shadow-pink-500/50 dark:hover:shadow-orange-800/80">
                 <h2 class="text-lg font-semibold">Your Total Expense</h2>
                 <p class="text-3xl font-bold mt-2 overflow-x-scroll no-scrollbar">{{ number_format($profileTransactions->transaction->where('type','expense')->sum('amount'),2) }} $</p>
             </div>
 
             <!-- Balance Card -->
-            <div class="bg-gradient-to-r from-blue-400 to-purple-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300  hover:shadow-2xl">
+            <div class="bg-gradient-to-r from-blue-400 to-purple-600 text-white p-6 rounded-xl shadow-lg transform transition duration-300  hover:shadow-2xl hover:shadow-purple-500/50 dark:hover:shadow-blue-800/80">
                 <h2 class="text-lg font-semibold">Your Balance</h2>
                 <p class="text-3xl font-bold mt-2 overflow-x-scroll no-scrollbar">{{ number_format($profileTransactions->transaction->where('type','income')->sum('amount')-$profileTransactions->transaction->where('type','expense')->sum('amount'),2) }} $</p>
             </div>
@@ -117,15 +117,15 @@
 
             <div class="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden">
                 @forelse($transactions as $key => $transaction)
-                @if ($key > 2)
-                    <div class="flex justify-center p-6 rounded-lg shadow-md">
-                        <a href="/transactions/all" class="px-5 py-2.5 bg-transparent text-cyan-400 border border-cyan-400 rounded-md hover:bg-cyan-400 hover:text-gray-900 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
-                            See More
-                        </a>
-                    </div>
-                    @break
-                @endif
-                    <div class="border-b p-4 transition-colors">
+                    @if ($key > 2)
+                        <div class="flex justify-center p-6 rounded-lg shadow-md">
+                            <a href="/transactions/all" class="px-5 py-2.5 bg-transparent text-cyan-400 border border-cyan-400 rounded-md hover:bg-cyan-400 hover:text-gray-900 hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all duration-300">
+                                See More
+                            </a>
+                        </div>
+                        @break
+                    @endif
+                    <div class="p-4 transition-colors">
                         <div class="flex justify-between items-center">
                             <div>
                                 <p class="font-medium">Added by: {{ $transaction->profile->name }}</p>
