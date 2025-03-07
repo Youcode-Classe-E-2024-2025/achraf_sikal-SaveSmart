@@ -4,10 +4,10 @@
 
 @section('content')
 @vite('resources/css/style.css')
-<div class="container">
-<div class="grid grid-cols-3 gap-4">
+<div class="container p-3">
+<div class="grid grid-cols-3 gap-4 ">
     @foreach ($profiles as $profile)
-        <a href="{{ route('profile.show',$profile['id']) }}" class="flex items-center space-x-4 bg-gray-100 p-3 rounded-lg shadow-md">
+        <a href="{{ route('profile.show',$profile['id']) }}" class="flex justify-center items-center h-40 w-40 space-x-4 bg-gray-100 p-3 rounded-full shadow-md">
             <div>
                 <div class="w-12 h-12 bg-blue-500 text-white flex items-center justify-center rounded-full text-lg font-bold">
                     {{ strtoupper(substr($profile["name"], 0, 1)) }}
