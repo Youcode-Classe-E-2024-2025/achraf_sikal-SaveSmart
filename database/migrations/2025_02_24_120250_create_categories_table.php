@@ -18,10 +18,9 @@ return new class extends Migration
 
         foreach (['Food', 'Healthcare', 'Rent', 'Education', 'Salary', 'Savings', 'Entertainment'] as $value) {
             if ($value !== 'Salary') {
-                DB::table('categories')->insert(['name'=> $value,'type'=> 'expense']);
-            }
-            else {
-                DB::table('categories')->insert(['name'=> $value,'type'=> 'income']);
+                DB::table('categories')->insert(['name' => $value, 'type' => 'expense']);
+            } else {
+                DB::table('categories')->insert(['name' => $value, 'type' => 'income']);
             }
         }
     }
