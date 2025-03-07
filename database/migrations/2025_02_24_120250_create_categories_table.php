@@ -15,6 +15,15 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
+
+        foreach (['Food', 'Healthcare', 'Rent', 'Education', 'Salary', 'Savings', 'Entertainment'] as $value) {
+            if ($value !== 'Salary') {
+                DB::table('categories')->insert(['name'=> $value,'type'=> 'expense']);
+            }
+            else {
+                DB::table('categories')->insert(['name'=> $value,'type'=> 'income']);
+            }
+        }
     }
 
     public function down()
