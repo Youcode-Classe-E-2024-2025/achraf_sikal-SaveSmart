@@ -166,7 +166,8 @@ function initChart() {
     budgetChart = new Chart(ctx, {
         type: chartType,
         data: {
-            labels: budgetData.labels, // common labels for both datasets
+            // Merge the actual and expected labels
+            labels: [...budgetData.labels, ...expectedBudgetData.labels],
             datasets: [
                 {
                     label: 'Actual Budget',
@@ -185,6 +186,8 @@ function initChart() {
         options: getChartOptions(chartType)
     });
 }
+
+
 
 // Get chart options based on chart type
 function getChartOptions(chartType) {
