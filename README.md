@@ -21,4 +21,8 @@ To set up the SaveSmart application locally, follow these steps:
    ```bash
    git clone https://github.com/Youcode-Classe-E-2024-2025/achraf_sikal-SaveSmart.git
    cd achraf_sikal-SaveSmart
-```
+    ```
+1. **serve the project**:
+
+   ```bash
+      php artisan serve
