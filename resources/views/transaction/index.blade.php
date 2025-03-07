@@ -9,18 +9,6 @@
 
         <form action="{{ route('transactions.create') }}" class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6" method="GET">
             @csrf
-            <div class="mb-4">
-                <select id="type" name="type" required
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:focus:ring-blue-500">
-                    <option value="" disabled selected>Select a type</option>
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
-            </div>
-            @error('type')
-                <div class="text-red-500"> {{ $message }} </div>
-            @enderror
-
             <!-- Amount Field -->
             <div class="mb-4">
                 <label for="amount" class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">Amount</label>

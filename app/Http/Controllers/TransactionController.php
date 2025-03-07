@@ -33,10 +33,6 @@ class TransactionController extends Controller
     public function create(Request $request)
     {
         $incomingFields = $request->validate([
-            'type' => [
-                'required',
-                'in:expense,income',
-            ],
             'amount' => [
                 'required',
                 'numeric',
@@ -51,8 +47,6 @@ class TransactionController extends Controller
             ],
             'description' => [],
         ], [
-            'type.required' => 'The transaction type is required.',
-            'type.in' => 'The transaction type must be either "expense" or "income".',
             'amount.required' => 'The amount is required.',
             'amount.numeric' => 'The amount must be a number.',
             'amount.between' => 'The amount must be between 1 $ and 100,000 $.',
@@ -63,6 +57,7 @@ class TransactionController extends Controller
         $profileId = Session::get('profile')->id;
         $incomingFields['user_id'] = auth('')->user()->id;
         $incomingFields['profile_id'] = $profileId;
+        $incomingFields['type'] = Category::find($incomingFields['category_id'])->type;
         Transaction::create($incomingFields);
 
         return redirect('/profile/'.$profileId);

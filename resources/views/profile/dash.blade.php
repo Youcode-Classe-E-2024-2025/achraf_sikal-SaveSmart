@@ -128,8 +128,12 @@
                     <div class="p-4 transition-colors">
                         <div class="flex justify-between items-center">
                             <div>
-                                <p class="font-medium">Added by: {{ $transaction->profile->name }}</p>
-                                <br class="text-gray-600 text-sm">Created at: <br> {{ $transaction->created_at->format('j M Y, H:i') }}</p>
+                            <p class="font-medium">Added by: {{ $transaction->profile->name }}</p>
+                                <br class="text-gray-600 text-sm">Created at: <br>
+                                @if ($transaction->created_at)
+                                    {{ $transaction->created_at->format('j M Y, H:i') }}
+                                @endif
+                            </p>
                             </div>
                             @php
                             $amount = $transaction->amount;
