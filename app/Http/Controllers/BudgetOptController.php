@@ -15,42 +15,19 @@ class BudgetOptController extends Controller
     {
         $this->middleware('check.auth');
         $this->middleware(function ($request, $next) {
-            $userId = Auth::user()->id;
-            $transaction = Transaction::where("user_id", $userId)->with('category')->get();
-            ///////////// needs //////////////
-            $needs = $transaction->filter(function ($transaction) {
-                return in_array($transaction->category->name, ['Food', 'Healthcare', 'Rent', 'Education']);
-            })->sum('amount');
-
-            ///////////// wants //////////////
-            $wants = $transaction->filter(function ($transaction) {
-                return !in_array($transaction->category->name, ['Food', 'Healthcare', 'Rent', 'Education', 'Salary']);
-            })->sum('amount');
-
-
-            ///////// total income //////////
-            $income = User::with('transaction')->find($userId)->transaction->where('type','income')->sum('amount');
-            $existingRecord = BudgetOpt::where('user_id', $userId)->first();
-            (!$existingRecord) ? BudgetOpt::create(['user_id' => $userId]) : false;
-            $existingRecord ? BudgetOpt::where('user_id', $userId)->update(['income'=> $income,'wants'=> $wants,'needs'=> $needs]) : false;
+            $userId = Auth::id();
+            $this->calculateAndSaveBudget($userId);
             return $next($request);
         });
     }
+
     /**
-     * Display a listing of the resource.
+     * Display the budget optimization page.
      */
     public function index()
     {
-        $budgetOpt = BudgetOpt::where("user_id",auth()->user()->id)->orderBy("created_at","desc")->first();
+        $budgetOpt = BudgetOpt::where("user_id", auth()->id())->latest()->first();
         return view("budget.index", compact("budgetOpt"));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
     }
 
     /**
@@ -58,38 +35,96 @@ class BudgetOptController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Logic for saving budget customization (if needed)
     }
 
     /**
-     * Display the specified resource.
+     * Update budget optimization data.
      */
-    public function show(budgetOpt $budgetOpt)
+    public function update(array $data, BudgetOpt $budgetOpt)
     {
-        //
+        $budgetOpt->update($data);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Delete a budget optimization record.
      */
-    public function edit(budgetOpt $budgetOpt)
+    public function destroy(BudgetOpt $budgetOpt)
     {
-        //
+        $budgetOpt->delete();
+        return redirect()->route('budget.index')->with('success', 'Budget record deleted.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Calculate and save budget categories for a user.
      */
-    public function update(array $data, budgetOpt $budgetOpt)
+    private function calculateAndSaveBudget($userId)
     {
-        
+        // Fetch all transactions with categories
+        $transactions = Transaction::where("user_id", $userId)->with('category')->get();
+
+        // Needs Calculation
+        $needs = $this->calculateNeeds($transactions);
+
+        // Wants Calculation
+        $wants = $this->calculateWants($transactions);
+
+        // Income Calculation
+        $income = $this->calculateIncome($userId);
+
+        $savings = $this->calculateSavings($transactions);
+
+        // Save or update budget data
+        $existingRecord = BudgetOpt::where('user_id', $userId)->first();
+
+        if (!$existingRecord) {
+            BudgetOpt::create([
+                'user_id' => $userId,
+                'income'  => $income,
+                'needs'   => $needs,
+                'wants'   => $wants,
+                'savings' => $savings,
+            ]);
+        } else {
+            $existingRecord->update([
+                'income'  => $income,
+                'needs'   => $needs,
+                'wants'   => $wants,
+                'savings' => $savings,
+            ]);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Calculate total "Needs" transactions.
      */
-    public function destroy(budgetOpt $budgetOpt)
+    private function calculateNeeds($transactions)
     {
-        //
+        return $transactions->filter(function ($transaction) {
+            return in_array($transaction->category->name, ['Food', 'Healthcare', 'Rent', 'Education']);
+        })->sum('amount');
+    }
+
+    /**
+     * Calculate total "Wants" transactions.
+     */
+    private function calculateWants($transactions)
+    {
+        return $transactions->filter(function ($transaction) {
+            return !in_array($transaction->category->name, ['Food', 'Healthcare', 'Rent', 'Education', 'Salary', 'Savings']);
+        })->sum('amount');
+    }
+
+    private function calculateSavings($transactions)
+    {
+        return $transactions->whereIn('category.name', ['Savings'])->sum('amount');
+    }
+    /**
+     * Calculate total Income.
+     */
+    private function calculateIncome($userId)
+    {
+        return Transaction::where("user_id", $userId)
+        ->where('type', 'income')->sum('amount');
     }
 }
