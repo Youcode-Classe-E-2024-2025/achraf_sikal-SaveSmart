@@ -96,56 +96,77 @@
 </div>
 
 <script>
-// Budget data
-const budgetValues = [
-    {{ $budgetOpt->income - $budgetOpt->needs - $budgetOpt->wants - $budgetOpt->savings }},
-    {{ $budgetOpt->needs }}+700,
-    {{ $budgetOpt->wants }}+300,
-    {{ $budgetOpt->savings }}
+// Actual budget data for the three key categories (Needs, Wants, Savings)
+let needs =({{ $budgetOpt->needs }});
+let wants = ({{ $budgetOpt->wants }});
+let savings = {{ $budgetOpt->savings }};
+
+const actualBudgetValues = [
+    needs ,{{ $budgetOpt->income*0.5 }}-needs,
+    wants,{{ $budgetOpt->income*0.3 }}-wants,
+    savings, {{ $budgetOpt->income*0.2 }}-savings,
 ];
 
 const totalIncome = {{ $budgetOpt->income }};
 
-// Calculate actual percentages
-const budgetPercentages = budgetValues.map(value =>
-totalIncome > 0 ? ((value / totalIncome) * 100).toFixed(2) : 0
+// Calculate actual percentages for each category
+const actualPercentages = actualBudgetValues.map(value =>
+    totalIncome > 0 ? ((value / totalIncome) * 100).toFixed(2) : 0
 );
-const budgetLabels = ['Balance', 'Needs ('+budgetPercentages[1]+'%)', 'Wants ('+budgetPercentages[2]+'%)', 'Savings ('+budgetPercentages[3]+'%)'];
-const budgetColors = ['rgb(59, 130, 246)', 'rgb(220, 38, 38)', 'rgb(234, 179, 8)', 'rgb(34, 197, 94)'];
 
-//
-const expectedPercentages = [50, 30, 20, 0];
+// Labels for the actual data (includes dynamic percentages)
+const actualLabels = [
+    'Needs (' + actualPercentages[0] + '%)','left for Needs',
+    'Wants (' + actualPercentages[1] + '%)','left for wants',
+    'Savings (' + actualPercentages[2] + '%)','left for savings'
+];
+
+// Colors for the actual data
+const actualColors = [
+    'rgb(220, 38, 38)','rgb(59, 130, 246)',   // Red for Needs
+    'rgb(234, 179, 8)','rgb(59, 130, 246)',   // Yellow for Wants
+    'rgb(34, 197, 94)','rgb(59, 130, 246)'    // Green for Savings
+];
+
+// Expected allocation percentages based on 50/30/20 rule (only for Needs, Wants, Savings)
+const expectedPercentages = [50, 30, 20];
 const expectedValues = expectedPercentages.map(percent =>
     (percent / 100) * totalIncome
 );
 
-// Budget data for actual spending
+// Expected colors (with transparency) for comparison
+const expectedColors = [
+    'rgba(220, 38, 38, 0.3)',
+    'rgba(234, 179, 8, 0.3)',
+    'rgba(34, 197, 94, 0.3)'
+];
+
+// Prepare chart data objects
 const budgetData = {
-    labels: budgetLabels,
-    values: budgetValues,
-    percentages: budgetPercentages,
-    colors: budgetColors
+    labels: actualLabels,   // common labels for the three categories
+    values: actualBudgetValues,
+    percentages: actualPercentages,
+    colors: actualColors
 };
 
-// Expected budget data for comparison (50/30/20 rule)
 const expectedBudgetData = {
-    labels: ['Needs (50%)', 'Wants (30%)', 'Savings (20%)'],
-    values: expectedValues.slice(0, 3),
-    colors: ['rgba(220, 38, 38, 0.3)', 'rgba(234, 179, 8, 0.3)', 'rgba(34, 197, 94, 0.3)']
+    labels: ['Needs (50%)', 'Wants (30%)', 'Savings (20%)'],  // static expected labels
+    values: expectedValues,
+    colors: expectedColors
 };
 
 // Chart configuration
-let chartType = 'pie';
+let chartType = 'doughnut';
 let budgetChart;
 
-// Initialize chart
+// Initialize the chart
 function initChart() {
     const ctx = document.getElementById('budgetChart').getContext('2d');
 
     budgetChart = new Chart(ctx, {
         type: chartType,
         data: {
-            labels: budgetData.labels.concat(expectedBudgetData.labels), // Merging actual & expected labels
+            labels: budgetData.labels, // common labels for both datasets
             datasets: [
                 {
                     label: 'Actual Budget',
@@ -180,15 +201,13 @@ function getChartOptions(chartType) {
                         const label = context.label || '';
                         const value = context.raw || 0;
                         let percentage = 0;
-
-                        // Ensure correct tooltip values for expected budget
-                        if (context.datasetIndex === 1) {
-                            const index = expectedBudgetData.labels.indexOf(label);
-                            percentage = expectedPercentages[index] || 0;
-                        } else {
+                        if (context.datasetIndex === 0) {
+                            // Actual dataset uses dynamic percentages
                             percentage = budgetData.percentages[context.dataIndex] || 0;
+                        } else {
+                            // Expected dataset uses fixed 50/30/20 values
+                            percentage = expectedPercentages[context.dataIndex] || 0;
                         }
-
                         return `${label}: $${value.toLocaleString()} (${percentage}%)`;
                     }
                 }
@@ -213,15 +232,11 @@ function getChartOptions(chartType) {
                     }
                 }
             },
-            indexAxis: 'x' // Horizontal bars; use 'y' for vertical bars
+            indexAxis: 'x'
         };
     }
-
     return commonOptions;
 }
-
-// Call initChart() when the page loads
-
 
 // Switch chart type
 function switchChartType(type) {
