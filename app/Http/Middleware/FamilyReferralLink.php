@@ -16,8 +16,8 @@ class FamilyReferralLink
     public function handle(Request $request, Closure $next): Response
     {
         // Store the cipher method
-        $ciphering = "AES-128-CTR";
-        
+        $ciphering = 'AES-128-CTR';
+
         $options = 0;
 
         // Non-NULL Initialization Vector for encryption
@@ -30,11 +30,11 @@ class FamilyReferralLink
         // $encryption = openssl_encrypt($simple_string, $ciphering,
         //             $encryption_key, $options, $encryption_iv);
 
-        $decryption_key = "SaveSmart";
+        $decryption_key = 'SaveSmart';
 
         // Use openssl_decrypt() function to decrypt the data
-        $decryption=openssl_decrypt ($request, $ciphering,
-                $decryption_key, $options, $encryption_iv);
+        $decryption = openssl_decrypt($request, $ciphering,
+            $decryption_key, $options, $encryption_iv);
 
         return $next($request);
     }

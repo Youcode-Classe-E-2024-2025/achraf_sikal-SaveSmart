@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Profiles;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Session;
 
@@ -16,13 +15,15 @@ class ProfilesController extends Controller
     {
         $this->middleware('check.auth');
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $profiles = Profiles::where('user_id', auth()->user()->id)->get();
-        return view("profile.index", compact("profiles"));
+
+        return view('profile.index', compact('profiles'));
     }
 
     /**
@@ -34,16 +35,17 @@ class ProfilesController extends Controller
             'profile_name' => [
                 'required',
                 'min:3',
-                'unique:profiles,name'
-            ]
+                'unique:profiles,name',
+            ],
         ], [
             'name.unique' => 'This profile name is already taken. Please choose another one.',
             'name.required' => 'The profile name is required.',
-            'name.min' => 'The profile name must be at least 3 characters long.'
+            'name.min' => 'The profile name must be at least 3 characters long.',
         ]);
         $incomingFields['name'] = $incomingFields['profile_name'];
         $incomingFields['user_id'] = auth()->user()->id;
         Profiles::create($incomingFields);
+
         return redirect()->route('profile.index')->with('success', 'Profile created successfully.');
     }
 
@@ -65,7 +67,8 @@ class ProfilesController extends Controller
         $user = auth()->user();
         $profileTransactions = Profiles::where('id', $profile->id)->with('transaction')->first();
         Session::put('profile', $profile);
-        return view('profile.dash',compact('user','profile', 'transactions', 'categories','profileTransactions'));
+
+        return view('profile.dash', compact('user', 'profile', 'transactions', 'categories', 'profileTransactions'));
     }
 
     /**

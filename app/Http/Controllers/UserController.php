@@ -5,22 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
-    public function logout(){
+    public function logout()
+    {
         auth()->logout();
-        return redirect("/");
+
+        return redirect('/');
     }
-    public function signup(Request $request){
-        if($request->method()=="POST"){
+
+    public function signup(Request $request)
+    {
+        if ($request->method() == 'POST') {
             $incomingFields = $request->validate([
-                'name'=> ['required','min:3','max:25',Rule::unique('users','name')],
-                'email'=> ['required','email',Rule::unique('users','email')],
-                'password'=> ['required','min:8','max:200'],
-                'avatar'=> ['required'],
+                'name' => ['required', 'min:3', 'max:25', Rule::unique('users', 'name')],
+                'email' => ['required', 'email', Rule::unique('users', 'email')],
+                'password' => ['required', 'min:8', 'max:200'],
+                'avatar' => ['required'],
             ]);
             if ($request->hasFile('avatar')) {
                 $incomingFields['avatar'] = $request->file('avatar')->store('avatars', 'public');
@@ -28,25 +30,34 @@ class UserController extends Controller
             $incomingFields['password'] = bcrypt($incomingFields['password']);
             $user = User::create($incomingFields);
             auth()->login($user);
+
             return redirect('/profile')->with('success', 'Account created successfully!');
         }
+
         return view('user/signup');
     }
-    public function login(Request $request){
-        if($request->method()=="POST"){
+
+    public function login(Request $request)
+    {
+        if ($request->method() == 'POST') {
             $incomingFields = $request->validate([
-                'email'=> ['required'],
-                'password'=> ['required'],
+                'email' => ['required'],
+                'password' => ['required'],
             ]);
-            if(auth()->attempt($incomingFields)){
+            if (auth()->attempt($incomingFields)) {
                 $request->session()->regenerate();
+
                 return redirect('/profile');
             }
         }
+
         return view('user/login');
     }
-    public function profile(Request $request){
+
+    public function profile(Request $request)
+    {
         $user = auth()->user();
-        return view('user/profile',compact('user'));
+
+        return view('user/profile', compact('user'));
     }
 }

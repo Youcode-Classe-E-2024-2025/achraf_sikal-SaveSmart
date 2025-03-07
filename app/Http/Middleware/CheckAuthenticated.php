@@ -10,7 +10,7 @@ class CheckAuthenticated
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login'); // Ensure "login" route is defined
         }
 

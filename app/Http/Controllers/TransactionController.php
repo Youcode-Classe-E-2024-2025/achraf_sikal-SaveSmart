@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
@@ -15,14 +15,16 @@ class TransactionController extends Controller
     {
         $this->middleware('check.auth');
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $customCategory = Category::where('user_id',auth()->user()->id)->get();
-        $defCategory = Category::where('user_id',null)->get();
-        return view("transaction.index", compact("customCategory","defCategory"));
+        $customCategory = Category::where('user_id', auth()->user()->id)->get();
+        $defCategory = Category::where('user_id', null)->get();
+
+        return view('transaction.index', compact('customCategory', 'defCategory'));
     }
 
     /**
@@ -33,21 +35,21 @@ class TransactionController extends Controller
         $incomingFields = $request->validate([
             'type' => [
                 'required',
-                'in:expense,income'
+                'in:expense,income',
             ],
             'amount' => [
                 'required',
                 'numeric',
-                'between:1,100000'
+                'between:1,100000',
             ],
             'category_id' => [
-                'required'
+                'required',
             ],
             'date' => [
                 'required',
-                'date'
+                'date',
             ],
-            'description'=>[]
+            'description' => [],
         ], [
             'type.required' => 'The transaction type is required.',
             'type.in' => 'The transaction type must be either "expense" or "income".',
@@ -56,13 +58,14 @@ class TransactionController extends Controller
             'amount.between' => 'The amount must be between 1 $ and 100,000 $.',
             'category.required' => 'The category is required.',
             'date.required' => 'The date is required.',
-            'date.date' => 'The date format is invalid.'
+            'date.date' => 'The date format is invalid.',
         ]);
         $profileId = Session::get('profile')->id;
         $incomingFields['user_id'] = auth('')->user()->id;
         $incomingFields['profile_id'] = $profileId;
         Transaction::create($incomingFields);
-        return redirect('/profile/' . $profileId);
+
+        return redirect('/profile/'.$profileId);
     }
 
     /**
@@ -76,10 +79,7 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
-    {
-
-    }
+    public function show(Transaction $transaction) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -104,13 +104,14 @@ class TransactionController extends Controller
     {
         //
     }
+
     public function showall()
     {
         if (Auth::check()) {
             $transactions = Transaction::where('user_id', auth()->user()->id)->with('profile')->paginate(10);
-            return view('transaction.desplay',compact( 'transactions'));
-        }
-        else {
+
+            return view('transaction.desplay', compact('transactions'));
+        } else {
             return redirect('/login');
         }
     }

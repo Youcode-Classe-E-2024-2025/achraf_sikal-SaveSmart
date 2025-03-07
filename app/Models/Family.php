@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Family extends Model
 {
     use HasFactory;
-    protected $table = "families";
+
+    protected $table = 'families';
+
     protected $fillable = ['name'];
 
     /**
