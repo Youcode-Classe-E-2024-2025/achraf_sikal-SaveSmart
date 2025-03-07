@@ -4,7 +4,7 @@
 
 @section('content')
 @vite('resources/css/style.css')
-<div class="container p-3">
+<div class="flex justify-center items-center p-3">
 <div class="grid grid-cols-3 gap-4 ">
     @foreach ($profiles as $profile)
         <a href="{{ route('profile.show',$profile['id']) }}" class="flex justify-center items-center h-40 w-40 space-x-4 bg-gray-100 p-3 rounded-full shadow-md">
